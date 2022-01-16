@@ -1,0 +1,71 @@
+version: '3'
+
+volumes:
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+  production_traefik: {}
+
+services:
+  yig_api:
+    container_name: yig_api
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    depends_on:
+      - yig_postgres
+      - yig_redis
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+    command: /start
+
+  yig_postgres:
+    container_name: yig_postgres
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data:Z
+      - production_postgres_data_backups:/backups:z
+    env_file:
+      - ./.envs/.production/.postgres
+
+  yig_traefik:
+    container_name: yig_traefik
+    build:
+      context: .
+      dockerfile: ./compose/production/traefik/Dockerfile
+    depends_on:
+      - yig_api
+    volumes:
+      - production_traefik:/etc/traefik/acme:z
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+
+  yig_redis:
+    image: redis:6
+
+  yig_awscli:
+    container_name: yig_awscli
+    build:
+      context: .
+      dockerfile: ./compose/production/aws/Dockerfile
+    env_file:
+      - ./.envs/.production/.django
+    volumes:
+      - production_postgres_data_backups:/backups:z
+
+  yig_frontend:
+    restart: always
+    build:  
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    image: yig_frontend_image
+    depends_on:
+      - yig_api
+    volumes:
+      - ./frontend/nginx:/etc/nginx/conf.d
+    expose:
+      - 80

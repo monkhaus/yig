@@ -9,26 +9,30 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import environ
 from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+env = environ.Env()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0#vy4gswlv$t+f+u)hwuy*e_qo=0%)@cqzf^91*s8^g9z=-0ii'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
+
+DJANGO_ADMIN_URL = env('DJANGO_ADMIN_URL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(env('DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:80', 'http://127.0.0.1:80', 'http://127.0.0.1:8000']
+ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(" ")
+
+CORS_ALLOWED_ORIGINS = env('DJANGO_CORS_ALLOWED_ORIGINS').split(" ")
+
 
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (

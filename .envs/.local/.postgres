@@ -1,0 +1,8 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=local_yig_db
+POSTGRES_USER=yig_user
+POSTGRES_PASSWORD=password123
+POSTGRES_ENGINE=django.db.backends.postgresql_psycopg2

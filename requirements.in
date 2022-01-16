@@ -20,3 +20,4 @@ djoser
 django-environ
 whitenoise
 django-extensions
+psycopg2

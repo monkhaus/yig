@@ -1,0 +1,76 @@
+log:
+  level: INFO
+
+entryPoints:
+  web:
+    # http
+    address: ":80"
+    http:
+      # https://docs.traefik.io/routing/entrypoints/#entrypoint
+      redirections:
+        entryPoint:
+          to: web-secure
+
+  web-secure:
+    # https
+    address: ":443"
+
+certificatesResolvers:
+  letsencrypt:
+    # https://docs.traefik.io/master/https/acme/#lets-encrypt
+    acme:
+      email: "tom.monkhouse95@gmail.com"
+      storage: /etc/traefik/acme/acme.json
+      # https://docs.traefik.io/master/https/acme/#httpchallenge
+      httpChallenge:
+        entryPoint: web
+
+http:
+  routers:
+    api:
+      rule: "Host(`api.youtubeideagenerator.com`)"
+      entryPoints:
+        - web-secure
+      middlewares:
+        - csrf
+      service: yig_api
+      tls:
+        # https://docs.traefik.io/master/routing/routers/#certresolver
+        certResolver: letsencrypt
+    frontend:
+      rule: "Host(`youtubeideagenerator.com`) || Host(`www.youtubeideagenerator.com`)"
+      entryPoints:
+        - web-secure
+      middlewares:
+        - csrf
+      service: yig_frontend
+      tls:
+        # https://docs.traefik.io/master/routing/routers/#certresolver
+        certResolver: letsencrypt
+
+  middlewares:
+    csrf:
+      # https://docs.traefik.io/master/middlewares/headers/#hostsproxyheaders
+      # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+      headers:
+        hostsProxyHeaders: ["X-CSRFToken"]
+
+  services:
+    api:
+      loadBalancer:
+        servers:
+          - url: http://api:8000
+    frontend:
+      loadBalancer:
+        servers:
+          - url: http://frontend:80
+    static:
+      loadBalancer:
+        servers:
+          - url: http://static:80
+
+providers:
+  # https://docs.traefik.io/master/providers/file/
+  file:
+    filename: /etc/traefik/traefik.yml
+    watch: true

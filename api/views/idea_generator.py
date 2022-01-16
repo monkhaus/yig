@@ -25,17 +25,18 @@ class IdeaGeneratorViewSet(viewsets.ModelViewSet):
 
         video = random.choice(videos)
         
-
         vid_dict = {
             'title': video['title']['runs'][0]['text'], 
             'url': video['navigationEndpoint']['commandMetadata']['webCommandMetadata']['url'],
-            'view_count': [int(s) for s in video['viewCountText']['simpleText'].split() if s.isdigit()]
+            'thumbnail_url': video['thumbnail']['thumbnails'][0]['url'],
+            'view_count': int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
         }
 
         Generator.objects.create(
             title=vid_dict['title'],
             url=vid_dict['url'],
-            view_count=vid_dict['view_count'][0]
+            thumbnail_url=vid_dict['thumbnail_url'],
+            view_count=vid_dict['view_count']
         )
 
         return self.queryset
