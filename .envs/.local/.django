@@ -4,7 +4,7 @@ USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
 DJANGO_DEBUG=1
 DJANGO_SECRET_KEY=django-insecure-=@6hkiomoun2etvv!w3e2%5ll4k*lzabr(w$f4#m1x8(j#qy*i
-DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:81 http://127.0.0.1:8000 http://127.0.0.1:81 http://localhost:81
+DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:81 http://127.0.0.1:8000 http://127.0.0.1:81 http://0.0.0.0:81 http://localhost:8080
 DJANGO_ALLOWED_HOSTS=0.0.0.0 localhost 127.0.0.1 0.0.0.0
 DJANGO_ADMIN_URL=fP2STiqBHXFHdktLjuDxJE5UUWPTTvs5U3VHdMZ/
 CSRF_COOKIE_SECURE=0

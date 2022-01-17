@@ -1,5 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import store from '../store';
+
 import Home from '../views/Home.vue';
+import SignUp from '../views/SignUp.vue';
+import LogIn from '../views/LogIn.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,16 +14,31 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+  },
+  {
+    path: '/sign-up',
+    name: 'SignUp',
+    component: SignUp,
+  },
+  {
+    path: '/log-in',
+    name: 'LogIn',
+    component: LogIn,
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requireLogin) && !store.state.isAuthenticated) {
+    next('/log-in');
+  } else {
+    next();
+  }
 });
 
 export default router;
