@@ -27,21 +27,21 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
         """
         Sync channel with db and user
         """
+        
+        channel  = Channel.objects.get_or_create(channel_url="UCNajC7dxZrjTw4lBWWJYZ8w")
+        videos = list(scrapetube.get_channel(channel[0].channel_url))
+
+        video_objects = []
+        for video in videos:
+           video_objects.append(Video(
+                channel_url=channel[0],
+                title= video['title']['runs'][0]['text'], 
+                thumbnail_url= video['thumbnail']['thumbnails'][0]['url'],
+                view_count= int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
+            ))
+
         import pdb; pdb.set_trace()
-        channel  = Channel.objects.get_or_create(channel_url=request.data['channel'])
- 
-        if not channel:
-            videos = list(scrapetube.get_channel("UCNajC7dxZrjTw4lBWWJYZ8w"))
 
-            video_objects = []
-            for video in videos:
-                video_objects.append({
-                    'channel_url': channel.id,
-                    'title': video['title']['runs'][0]['text'], 
-                    'thumbnail_url': video['thumbnail']['thumbnails'][0]['url'],
-                    'view_count': int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
-                })
-
-        Video.objects.bulk_create(**video_objects)
+        Video.objects.bulk_create(video_objects)
 
         return Response(status.HTTP_201_CREATED)

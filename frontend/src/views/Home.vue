@@ -44,11 +44,10 @@ export default {
   methods: {
     submitForm(e) {
       const formData = {
-        username: this.username,
-        password: this.password,
+        hello: 'something',
       };
       axios
-        .post('api/v1/users/', formData)
+        .post('api/v1/sync/', formData)
         .then((response) => {
           this.$router.push('/log-in');
         })
