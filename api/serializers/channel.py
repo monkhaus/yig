@@ -5,4 +5,4 @@ from api.models.channel import Channel
 class ChannelSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Channel
-		fields = ('id', 'channel')
+		fields = ('id', 'channel_url')

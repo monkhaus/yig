@@ -4,17 +4,20 @@ from rest_framework.response import Response
 import scrapetube
 from django.contrib.auth.models import User
 from api.models.idea_generator import Generator
+from api.models.channel import Channel
 from api.serializers import IdeaGeneratorSerializer
 from rest_framework.response import Response
 from rest_framework import status
 import json
 import random
 
+from api.serializers.channel import ChannelSerializer
+
 
 class IdeaGeneratorViewSet(viewsets.ModelViewSet):
     ## permission_classes = (IsAuthenticated,)
-    queryset = Generator.objects.all()
-    serializer_class = IdeaGeneratorSerializer
+    queryset = Channel.objects.all()
+    serializer_class = ChannelSerializer
 
     def get_queryset(self):
         """

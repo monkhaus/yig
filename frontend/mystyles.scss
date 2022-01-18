@@ -3,7 +3,6 @@
 $info: $white-bis;
 $primary: hsl(183, 65%, 24%);
 
-
 .home_image_container {
     overflow: hidden;
     background-image: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,.55)), url("https://quotefancy.com/media/wallpaper/3840x2160/6597218-Elon-Musk-Quote-One-of-the-really-tough-things-is-figuring-out.jpg");
@@ -12,11 +11,5 @@ $primary: hsl(183, 65%, 24%);
     background-position: center center;
 }
 
- 
 @import "node_modules/bulma/bulma.sass";
 @import 'node_modules/@creativebulma/bulma-tooltip/src/sass/index.sass'
-
-
-
-
-

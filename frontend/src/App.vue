@@ -27,7 +27,9 @@
           <template v-if="$store.state.isAuthenticated">
 
             <!-- start: This only displays on mobile and tablet -->
-            <p>Sync</p>
+            <router-link class="navbar-item is-hidden-desktop" to="/">
+              Signed in as<strong>&nbsp;{{username }}</strong>
+            </router-link>
             <hr class="navbar-divider logout-burger-divider">
             <button class="button is-inverted is-dark is-fullwidth
             logout-menu is-hidden-desktop" @click="logUserOut()">
@@ -56,6 +58,9 @@
                   <router-link class="navbar-item" to="/">
                     Signed in as<strong>&nbsp;{{username }}</strong>
                   </router-link>
+                  <button class="button is-danger is-inverted is-fullwidth" @click="logUserOut()">
+                    Logout
+                  </button>
                 </div>
               </div>
             </div>
@@ -101,7 +106,7 @@ export default {
   name: 'App',
   beforeCreate() {
     this.$store.commit('initializeStore');
-    console.log(this.$store.state.token);
+
     if (this.$store.state.token) {
       axios.defaults.headers.common['Authorization'] = `Token ${this.$store.state.token}`;
     } else {
