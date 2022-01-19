@@ -44,12 +44,12 @@ export default {
   methods: {
     submitForm(e) {
       const formData = {
-        hello: 'something',
+        channel_url: 'UCNajC7dxZrjTw4lBWWJYZ8w',
       };
       axios
         .post('api/v1/sync/', formData)
         .then((response) => {
-          this.$router.push('/log-in');
+          console.log(response);
         })
         .catch((error) => {
           if (error.response) {

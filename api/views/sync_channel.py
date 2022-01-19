@@ -24,23 +24,25 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
         return self.queryset
 
     def create(self, request):
-        """
-        Sync channel with db and user
-        """
-        
-        channel  = Channel.objects.get_or_create(channel_url="UCNajC7dxZrjTw4lBWWJYZ8w")
-        videos = list(scrapetube.get_channel(channel[0].channel_url))
+        """Sync channel with db and user"""
+        channel, created = Channel.objects.get_or_create(channel_url=request.data.get('channel_url'))
+        videos = list(scrapetube.get_channel(channel.channel_url))
+
+        if not created:
+            # grab all the records related to the channel url
+            stored_videos = Video.objects.filter(channel_url=channel.id).values_list('youtube_video_id', flat=True)
 
         video_objects = []
+        list_of_scraped_youtube_ids = []
         for video in videos:
-           video_objects.append(Video(
-                channel_url=channel[0],
-                title= video['title']['runs'][0]['text'], 
-                thumbnail_url= video['thumbnail']['thumbnails'][0]['url'],
-                view_count= int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
-            ))
-
-        import pdb; pdb.set_trace()
+            if video['videoId'] not in stored_videos:
+                video_objects.append(Video(
+                    channel_url=channel,
+                    youtube_video_id=video['videoId'],
+                    title= video['title']['runs'][0]['text'], 
+                    thumbnail_url= video['thumbnail']['thumbnails'][0]['url'],
+                    view_count= int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
+                ))
 
         Video.objects.bulk_create(video_objects)
 
