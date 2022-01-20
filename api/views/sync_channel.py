@@ -25,12 +25,11 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         """Sync channel with db and user"""
+        import pdb; pdb.set_trace()
         channel, created = Channel.objects.get_or_create(channel_url=request.data.get('channel_url'))
         videos = list(scrapetube.get_channel(channel.channel_url))
-
-        if not created:
-            # grab all the records related to the channel url
-            stored_videos = Video.objects.filter(channel_url=channel.id).values_list('youtube_video_id', flat=True)
+  
+        stored_videos = Video.objects.filter(channel_url=channel.id).values_list('youtube_video_id', flat=True)
 
         video_objects = []
         list_of_scraped_youtube_ids = []
@@ -40,7 +39,7 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
                     channel_url=channel,
                     youtube_video_id=video['videoId'],
                     title= video['title']['runs'][0]['text'], 
-                    thumbnail_url= video['thumbnail']['thumbnails'][0]['url'],
+                    thumbnail_url= video['thumbnail']['thumbnails'][3]['url'],
                     view_count= int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
                 ))
 

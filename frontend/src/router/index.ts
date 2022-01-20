@@ -4,6 +4,7 @@ import store from '../store';
 import Home from '../views/Home.vue';
 import SignUp from '../views/SignUp.vue';
 import LogIn from '../views/LogIn.vue';
+import Sync from '../views/Sync.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/log-in',
     name: 'LogIn',
     component: LogIn,
+  },
+  {
+    path: '/sync',
+    name: 'Sync',
+    component: Sync,
+    meta: {
+      requireLogin: true,
+    },
   },
 ];
 

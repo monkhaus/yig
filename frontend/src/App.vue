@@ -1,16 +1,16 @@
 <template>
   <div id="wrapper">
 
-    <nav class="navbar is-white">
+    <nav class="navbar is-primary">
       <div class="navbar-brand">
         <template v-if="$store.state.isAuthenticated">
-          <router-link to="/" class="navbar-item has-text-primary">
-              <strong>YouTube Idea Generator</strong>
+          <router-link to="/" class="navbar-item has-text-success">
+              <strong>Video Idea Generator</strong>
           </router-link>
         </template>
         <template v-else>
-          <router-link to="/" class="navbar-item has-text-primary">
-              <strong>YouTube Idea Generator</strong>
+          <router-link to="/" class="navbar-item has-text-success">
+              <strong>Video Idea Generator</strong>
           </router-link>
         </template>
         <a role="button" class="navbar-burger desktop-navigation"
@@ -70,10 +70,10 @@
 
           <!-- start: navbar if user is signed out -->
           <template v-else>
-            <router-link to="/about" class="navbar-item">About</router-link>
+            <router-link to="/about" class="navbar-item has-text-success">About</router-link>
             <div class="navbar-item is-hidden-touch">
               <div class="buttons">
-                <router-link to="/log-in" class="button is-medium is-primary">
+                <router-link to="/log-in" class="button is-medium is-link">
                   Log in
                 </router-link>
               </div>
@@ -94,9 +94,10 @@
     </section>
 
     <footer class="footer">
-      <p class="has-text-centered">YoutubeIdeaGenerator &copy; 2021</p>
+      <p class="has-text-centered">VideoIdeaGenerator &copy; 2021</p>
     </footer>
   </div>
+
 </template>
 
 <script>
@@ -194,6 +195,17 @@ export default {
 
 <style lang="scss">
 @import 'mystyles.scss';
+
+html, body {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+}
+
+body {
+  background-color: $info;
+}
 
 #home-section {
   padding: 0px;

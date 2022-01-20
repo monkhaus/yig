@@ -1,15 +1,15 @@
 <template>
   <div class="home">
-    <h1>Welcome to the video idea generator.</h1>
     <template v-if="$store.state.isAuthenticated">
     You are signed in.
     </template>
 
     <template v-else>
         <div class="columns">
-            <div class="column is-4 is-offset-4">
-                <form  class="box" @submit.prevent="submitForm">
-                    <div class="notification is-danger" v-if="errors.length">
+            <div class="column is-3-desktop is-10-tablet is-offset-4-desktop
+            is-offset-1-tablet is-12-mobile py-6">
+                <form @submit.prevent="submitForm">
+                    <div class="notification" v-if="errors.length">
                         <p
                             v-for="error in erros"
                             v-bind:key="error"
@@ -17,9 +17,34 @@
                             {{ error }}
                         </p>
                     </div>
+                    <div class="columns is-multiline-mobile is-centered">
+                      <div
+                        class="column is-12-desktop is-one-third-tablet is-10-mobile
+                        is-offset-1-mobile"
+                        v-for="video in video_detail"
+                        v-bind:key="video.id"
+                      >
+                        <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
+                        <div class="box has-background-link media-center video-detail-box">
+                          <figure class="image image is-16by9">
+                            <img :src="video.thumbnail_url" alt="thumbnail">
+                          </figure>
+                          <br>
+                          <div class="box video-detail-box has-background-link-light">
+                            <h1>{{ video.title }}</h1>
+                            <p class="has-text-right is-size-7">
+                              <strong>{{ video.view_count }}</strong>
+                            </p>
+                          </div>
+                        </div>
+                        </a>
+                      </div>
+                    </div>
                     <div class="field">
                         <div class="control">
-                            <button class="button is-fullwidth is-success">Generate</button>
+                            <button class="button is-fullwidth is-success">
+                              Generate Inspiration
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -36,20 +61,25 @@ export default {
   name: 'GenerateHomeView',
   data() {
     return {
-      username: '',
-      password: '',
       errors: [],
+      video_detail: [],
     };
+  },
+  mounted() {
+    this.submitForm();
   },
   methods: {
     submitForm(e) {
-      const formData = {
-        channel_url: 'UCNajC7dxZrjTw4lBWWJYZ8w',
-      };
       axios
-        .post('api/v1/sync/', formData)
+        .get('api/v1/generator/')
         .then((response) => {
-          console.log(response);
+          if (response.data) {
+            this.video_detail = [];
+            for (let i = 0; i < response.data.length; i += 1) {
+              this.video_detail.push(response.data[i]);
+              this.video_detail[i].view_count = this.video_detail[i].view_count.toLocaleString();
+            }
+          }
         })
         .catch((error) => {
           if (error.response) {
@@ -70,10 +100,7 @@ export default {
 };
 </script>
 
-<style>
-#sign-up-form {
-    border-bottom: 1px solid #dadde1;
-    margin: 15px 10px;
-    padding: 15px 10px;
-}
+<style lang="scss">
+@import 'mystyles.scss';
+
 </style>

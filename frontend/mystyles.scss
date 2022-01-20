@@ -1,7 +1,10 @@
 @charset "utf-8";
 @import 'node_modules/bulma/sass/utilities/initial-variables.sass';
-$info: $white-bis;
-$primary: hsl(183, 65%, 24%);
+$info: #2b2d42;
+$primary: #8d99ae;
+$success: #edf2f4;
+$link: #d90429;
+$warning: #ef233c;
 
 .home_image_container {
     overflow: hidden;
