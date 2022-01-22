@@ -35,7 +35,6 @@
                             Create New Account
                         </router-link>
                     </div>
-
                 </form>
             </div>
         </div>

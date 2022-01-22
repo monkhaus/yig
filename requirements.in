@@ -21,3 +21,4 @@ django-environ
 whitenoise
 django-extensions
 psycopg2
+beautifulsoup4

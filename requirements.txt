@@ -13,6 +13,8 @@ backports.zoneinfo==0.2.1
     # via
     #   -r requirements.in
     #   django
+beautifulsoup4==4.10.0
+    # via -r requirements.in
 certifi==2021.10.8
     # via
     #   -r requirements.in
@@ -111,6 +113,8 @@ social-auth-app-django==4.0.0
     # via djoser
 social-auth-core==4.1.0
     # via social-auth-app-django
+soupsieve==2.3.1
+    # via beautifulsoup4
 sqlparse==0.4.2
     # via
     #   -r requirements.in

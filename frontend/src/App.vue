@@ -42,7 +42,7 @@
               <div class="navbar-item has-dropdown desktop-navigation is-hoverable">
                 <a class="navbar-link">+</a>
                 <div class="navbar-dropdown is-right">
-                  Sync
+                  <router-link to="/sync" class="navbar-item">Sync new channel</router-link>
                 </div>
               </div>
             </div>
@@ -70,7 +70,7 @@
 
           <!-- start: navbar if user is signed out -->
           <template v-else>
-            <router-link to="/about" class="navbar-item has-text-success">About</router-link>
+            <router-link to="/" class="navbar-item has-text-success">Home</router-link>
             <div class="navbar-item is-hidden-touch">
               <div class="buttons">
                 <router-link to="/log-in" class="button is-medium is-link">

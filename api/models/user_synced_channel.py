@@ -8,4 +8,4 @@ class UserSyncedChannel(models.Model):
     channels = models.ManyToManyField(Channel, blank=True, null=True)
 
     def __str__(self) -> str:
-        return str(self.channels)
+        return str(self.user)

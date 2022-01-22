@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <template v-if="$store.state.isAuthenticated">
-    You are signed in.
     </template>
 
     <template v-else>
