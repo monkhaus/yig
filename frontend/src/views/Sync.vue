@@ -7,15 +7,27 @@
           </div>
         </div>
         <div class="columns">
-          <div class="column is-2 is-offset-1 pt-4 is-offset-1-mobile">
-            <a href="https://www.youtube.com/channel/UCEp5RurNdGgkSx4Fj13VH4g"></a>
+          <div
+            class="column is-1 is-offset-1 is-10-mobile
+            is-offset-1-mobile"
+            v-for="channel in my_synced_channels"
+            v-bind:key="channel.channel_id"
+          >
+            <a :href="channel.channel_url" target="_blank">
+            <div class="has-text-centered">
+              <figure class="image is-128x128 is-inline-block">
+                  <img class="is-rounded" :src="channel.channel_logo"/>
+              </figure>
+              <p>{{ channel.channel_name }}</p>
+            </div>
+            </a>
           </div>
         </div>
         <div class="columns">
             <div class="column is-4 is-offset-4 py-6">
                 <form class="box" @submit.prevent="submitForm">
                     <div class="field">
-                        <label>Channel</label>
+                        <label>Channel to sync:</label>
                         <div class="control">
                             <input type="text" name="channel" class="input" v-model="channel">
                         </div>
@@ -29,8 +41,9 @@
                         </p>
                     </div>
                     <div class="field">
-                        <div class="control">
+                        <div class="control has-text-centered">
                             <button class="button is-primary is-fullwidth">Sync</button>
+                            <p class="is-size-7">This may take a few seconds.</p>
                         </div>
                     </div>
                 </form>
@@ -63,7 +76,8 @@ export default {
       axios
         .post('api/v1/sync/', formdata)
         .then((response) => {
-          // console.log(response);
+          this.my_synced_channels = [];
+          this.getSyncedChannels();
         })
         .catch((error) => {
           if (error.response) {
@@ -84,12 +98,10 @@ export default {
       axios
         .get('api/v1/sync/')
         .then((response) => {
-          console.log(response);
           if (response.data) {
-            for (let i = 0; i < response.data.length; i += 1) {
-              this.my_synced_channels.push(response.data[i]);
+            for (let i = 0; i < response.data[0].channels.length; i += 1) {
+              this.my_synced_channels.push(response.data[0].channels[i]);
             }
-            console.log(this.my_synced_channels);
           }
         })
         .catch((error) => {

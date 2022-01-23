@@ -5,6 +5,7 @@ export default createStore({
     token: '',
     isAuthenticated: false,
     activeUser: '',
+    isPremium: false,
   },
   mutations: {
     initializeStore(state) {
