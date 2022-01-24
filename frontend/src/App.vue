@@ -43,6 +43,7 @@
                 <a class="navbar-link">+</a>
                 <div class="navbar-dropdown is-right">
                   <router-link to="/sync" class="navbar-item">Sync new channel</router-link>
+                  <router-link to="/" class="navbar-item">Generate inspiration</router-link>
                 </div>
               </div>
             </div>
@@ -188,7 +189,9 @@ export default {
   watch: {
     $route(to, from) {
       this.getMe();
+      document.title = to.meta.title || 'Vig';
     },
+    immediate: true,
   },
 };
 </script>

@@ -11,6 +11,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: {
+      title: 'Home',
+    },
   },
   {
     path: '/about',
@@ -33,6 +36,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Sync,
     meta: {
       requireLogin: true,
+      title: 'Sync',
     },
   },
 ];

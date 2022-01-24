@@ -24,7 +24,10 @@ class IdeaGeneratorViewSet(viewsets.ModelViewSet):
         """
         Return a video idea.
         """
+        self.queryset = Video.objects.all()
         random_video = choice(self.queryset)
         random_video_1 = choice(self.queryset)
+        random_video_2 = choice(self.queryset)
+        random_video_3 = choice(self.queryset)
 
         return [random_video, random_video_1]

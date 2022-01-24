@@ -2,14 +2,14 @@
   <div class="sync">
     <template v-if="$store.state.isAuthenticated">
         <div class="columns">
-          <div class="column is-2 is-offset-1 pt-4 is-offset-1-mobile">
-            <h1 class="has-text-success">My Synced Channels</h1>
+          <div class="column is-2 is-offset-1 py-5">
+            <router-link to="/" class="button is-link">-> Generate inspiration</router-link>
           </div>
         </div>
-        <div class="columns">
+        <div class="columns is-multiline py-2">
           <div
-            class="column is-1 is-offset-1 is-10-mobile
-            is-offset-1-mobile"
+            class="column is-3 is-10-mobile
+            is-offset-1-mobile is-hidden-mobile"
             v-for="channel in my_synced_channels"
             v-bind:key="channel.channel_id"
           >
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="columns">
-            <div class="column is-4 is-offset-4 py-6">
+            <div class="column is-5 is-offset-4 py-6">
                 <form class="box" @submit.prevent="submitForm">
                     <div class="field">
                         <label>Channel to sync:</label>
