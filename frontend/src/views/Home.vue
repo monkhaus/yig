@@ -13,7 +13,7 @@
         </div>
         <div class="columns">
           <div class="column is-1 is-offset-1 pb-0 mr-5">
-            <span class="has-text-success">From:</span>
+            <span class="has-text-success">Source:</span>
           </div>
           <div class="column is-1 pb-0 mb-0">
             <span class="has-text-success">Quantity:</span>
@@ -21,15 +21,15 @@
         </div>
         <div class="columns">
           <div class="column is-1 is-offset-1 mr-5">
-            <select v-model="generate_from">
+            <select class="dropdown-content" v-model="generate_from">
               <option v-for="generator_option in generate_from_options"
               :key="generator_option.value" :value="generator_option.value">
                 {{ generator_option.text }}
               </option>
             </select>
           </div>
-          <div class="column is-1 mr-5">
-            <select v-model="video_quantity">
+          <div class="column is-1 mr-4">
+            <select class="dropdown-content px-5" v-model="video_quantity">
               <option v-for="quantity in video_quantity_options"
               :key="quantity.value" :value="quantity.value">
                 {{ quantity.text }}
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="columns is-multiline is-centered">
-            <div class="column is-8-desktop is-10-tablet
+            <div class="column is-7-desktop is-10-tablet
             is-offset-1-tablet is-12-mobile py-6">
                 <form @submit.prevent="submitForm">
                     <div class="notification" v-if="errors.length">
@@ -72,12 +72,16 @@
                         </a>
                       </div>
                     </div>
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-fullwidth is-success">
-                              Generate Inspiration
-                            </button>
+                    <div class="columns is-centered">
+                      <div class="column is-6-desktop">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-fullwidth is-success">
+                                  Generate Inspiration
+                                </button>
+                            </div>
                         </div>
+                      </div>
                     </div>
                 </form>
             </div>
@@ -148,7 +152,7 @@ export default {
       generate_from_options: [
         { text: 'synced channels', value: 'SYNCED' },
         { text: 'random channels', value: 'RANDOM' },
-        { text: '1 random. 1 synced', value: 'RAN_SYNC' },
+        { text: '50/50', value: 'RAN_SYNC' },
       ],
       video_quantity_options: [
         { text: '1', value: 'ONE' },
@@ -164,7 +168,12 @@ export default {
   methods: {
     submitForm(e) {
       axios
-        .get('api/v1/generator/')
+        .get('api/v1/generator/', {
+          params: {
+            generate_from: this.generate_from,
+            video_quantity: this.video_quantity,
+          },
+        })
         .then((response) => {
           if (response.data) {
             this.video_detail = [];
