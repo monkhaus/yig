@@ -1,58 +1,62 @@
 <template>
-  <div class="home">
+  <div class="home container">
     <template v-if="$store.state.isAuthenticated">
-        <div class="columns">
-          <div class="column is-2 is-offset-1 py-5">
+        <div class="columns is-centered">
+          <div class="column is-9-fullhd is-10-desktop is-10-tablet py-5">
             <router-link to="/sync" class="button is-link">+ Sync more channels</router-link>
           </div>
         </div>
-        <div class="columns">
-          <div class="column is-10 is-offset-1 pb-4">
+        <div class="columns is-centered">
+          <div class="column is-9-fullhd is-10-desktop is-10-tablet pb-4">
             <p class="is-size-5 has-text-success">Generator options:</p>
           </div>
         </div>
-        <div class="columns">
-          <div class="column is-1 is-offset-1 pb-0 mr-5">
-            <span class="has-text-success">Source:</span>
-          </div>
-          <div class="column is-1 pb-0 mb-0">
-            <span class="has-text-success">Quantity:</span>
+        <div class="columns is-centered">
+          <div class="column is-9-fullhd is-10-desktop is-10-tablet">
+            <div class="columns">
+              <div class="column is-1 is-2-desktop is-3-tablet">
+                <span class="is-12 has-text-success">Source:</span>
+              </div>
+              <div class="column is-1 is-1-tablet pb-0 mb-0">
+                <span class="has-text-success">Quantity:</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="columns">
-          <div class="column is-1 is-offset-1 mr-5">
-            <select class="dropdown-content" v-model="generate_from">
-              <option v-for="generator_option in generate_from_options"
-              :key="generator_option.value" :value="generator_option.value">
-                {{ generator_option.text }}
-              </option>
-            </select>
-          </div>
-          <div class="column is-1 mr-4">
-            <select class="dropdown-content px-5" v-model="video_quantity">
-              <option v-for="quantity in video_quantity_options"
-              :key="quantity.value" :value="quantity.value">
-                {{ quantity.text }}
-              </option>
-            </select>
+        <div class="columns is-centered">
+          <div class="column is-9-fullhd is-10-desktop is-10-tablet">
+            <div class="columns">
+              <div class="column is-2-desktop is-3-tablet">
+                <select class="is-12 dropdown-content" v-model="generate_from">
+                  <option v-for="generator_option in generate_from_options"
+                  :key="generator_option.value" :value="generator_option.value">
+                    {{ generator_option.text }}
+                  </option>
+                </select>
+              </div>
+              <div class="column is-1-desktop is-1-tablet">
+                <select class="is-12 dropdown-content px-5" v-model="video_quantity">
+                  <option v-for="quantity in video_quantity_options"
+                  :key="quantity.value" :value="quantity.value">
+                    {{ quantity.text }}
+                  </option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
         <div class="columns is-multiline is-centered">
-            <div class="column is-7-desktop is-10-tablet
-            is-offset-1-tablet is-12-mobile py-6">
+            <div class="column is-9-fullhd is-10-widescreen is-10-desktop is-10-tablet
+            is-12-mobile py-6">
                 <form @submit.prevent="submitForm">
                     <div class="notification" v-if="errors.length">
-                        <p
-                            v-for="error in erros"
-                            v-bind:key="error"
-                        >
-                            {{ error }}
+                        <p v-for="error in erros" v-bind:key="error">
+                          {{ error }}
                         </p>
                     </div>
                     <div class="columns is-centered is-multiline">
                       <div
-                        class="column is-6-desktop is-one-third-tablet is-10-mobile
-                        is-offset-1-mobile"
+                        class="column is-6-desktop is-6-tablet is-10-mobile"
                         v-for="video in video_detail"
                         v-bind:key="video.id"
                       >
@@ -73,7 +77,7 @@
                       </div>
                     </div>
                     <div class="columns is-centered">
-                      <div class="column is-6-desktop">
+                      <div class="column is-6-mobile is-6-tablet is-6-desktop ">
                         <div class="field">
                             <div class="control">
                                 <button class="button is-fullwidth is-success">
@@ -90,7 +94,7 @@
 
     <template v-else>
         <div class="columns">
-            <div class="column is-3-desktop is-10-tablet is-offset-4-desktop
+            <div class="column is-3-fullhd is-3-desktop is-10-tablet is-offset-4-desktop
             is-offset-1-tablet is-12-mobile py-6">
                 <form @submit.prevent="submitForm">
                     <div class="notification" v-if="errors.length">
