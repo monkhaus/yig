@@ -37,11 +37,20 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
             channel_id = channel_data_json['header']['c4TabbedHeaderRenderer']['channelId']
             channel_name = channel_data_json['header']['c4TabbedHeaderRenderer']['title']
             channel_logo = channel_data_json['header']['c4TabbedHeaderRenderer']['avatar']['thumbnails'][2]['url']
+            channel_subscribers = channel_data_json['header']['c4TabbedHeaderRenderer']['subscriberCountText']['simpleText'].strip(" subscribers").lower()
+
+            if 'm' in channel_subscribers:
+                channel_subscribers = int(channel_subscribers.strip('m')) * 1000000
+            elif 'k' in channel_subscribers:
+                channel_subscribers = int(channel_subscribers.stip('k')) * 1000
+            else:
+                pass
 
             if channel:
                 channel.channel_id = channel_id
                 channel.channel_name = channel_name
                 channel.channel_logo = channel_logo
+                channel.channel_subscribers = channel_subscribers
                 channel.save()
         try:
             synced_channel, created = UserSyncedChannel.objects.get_or_create(user=request.user)

@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import store from '../store';
-
 import Home from '../views/Home.vue';
 import SignUp from '../views/SignUp.vue';
 import LogIn from '../views/LogIn.vue';
+import Play from '../views/Play.vue';
 import Sync from '../views/Sync.vue';
 
 const routes: Array<RouteRecordRaw> = [
@@ -37,6 +37,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requireLogin: true,
       title: 'Sync',
+    },
+  },
+  {
+    path: '/play',
+    name: 'Play',
+    component: Play,
+    meta: {
+      requireLogin: true,
+      title: 'Play',
     },
   },
 ];

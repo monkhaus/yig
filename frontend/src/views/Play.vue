@@ -15,9 +15,6 @@
               <div class="column is-2-desktop is-3-tablet is-7-mobile">
                 <span class="is-12 has-text-success">Source:</span>
               </div>
-              <div class="column is-1 is-1-tablet is-5-mobile is-3-mobile pb-0 mb-0">
-                <span class="has-text-success">Quantity:</span>
-              </div>
             </div>
           </div>
         </div>
@@ -29,14 +26,6 @@
                   <option v-for="generator_option in generate_from_options"
                   :key="generator_option.value" :value="generator_option.value">
                     {{ generator_option.text }}
-                  </option>
-                </select>
-              </div>
-              <div class="column is-1-desktop is-1-tablet is-3-mobile">
-                <select class="is-12 dropdown-content px-5" v-model="video_quantity">
-                  <option v-for="quantity in video_quantity_options"
-                  :key="quantity.value" :value="quantity.value">
-                    {{ quantity.text }}
                   </option>
                 </select>
               </div>
@@ -69,17 +58,15 @@
                         v-for="video in video_detail"
                         v-bind:key="video.id"
                       >
-                        <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
+                        <a href="#" @click.prevent="guess(video.id, video.view_count)">
                         <div class="box has-background-link media-center video-detail-box">
                           <figure class="image image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
+                            <div class="centered">Centered</div>
                           </figure>
                           <br>
                           <div class="box video-detail-box has-background-link-light">
                             <h1>{{ video.title }}</h1>
-                            <p class="has-text-right is-size-7">
-                              <strong>{{ video.view_count }}</strong>
-                            </p>
                           </div>
                         </div>
                         </a>
@@ -90,7 +77,7 @@
                         <div class="field">
                             <div class="control">
                                 <button class="button is-fullwidth is-success">
-                                  Generate Inspiration
+                                  Generate
                                 </button>
                             </div>
                         </div>
@@ -121,7 +108,7 @@
                         v-for="video in video_detail"
                         v-bind:key="video.id"
                       >
-                        <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
+                        <a href="#" @click.prevent="guess(video.id, video.view_count)">
                         <div class="box has-background-link media-center video-detail-box">
                           <figure class="image image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
@@ -129,9 +116,6 @@
                           <br>
                           <div class="box video-detail-box has-background-link-light">
                             <h1>{{ video.title }}</h1>
-                            <p class="has-text-right is-size-7">
-                              <strong>{{ video.view_count }}</strong>
-                            </p>
                           </div>
                         </div>
                         </a>
@@ -140,7 +124,7 @@
                     <div class="field">
                         <div class="control">
                             <button class="button is-fullwidth is-success">
-                              Generate Inspiration
+                              Generate
                             </button>
                         </div>
                     </div>
@@ -155,11 +139,12 @@
 import axios from 'axios';
 
 export default {
-  name: 'Home',
+  name: 'Play',
   data() {
     return {
       errors: [],
       video_detail: [],
+      most_views: 0,
       generate_from: 'SYNCED',
       video_quantity: 'TWO',
       generate_from_options: [
@@ -188,11 +173,14 @@ export default {
           },
         })
         .then((response) => {
+          this.most_views = 0;
           if (response.data) {
             this.video_detail = [];
             for (let i = 0; i < response.data.length; i += 1) {
               this.video_detail.push(response.data[i]);
-              this.video_detail[i].view_count = this.video_detail[i].view_count.toLocaleString();
+              if (this.video_detail[i].view_count > this.most_views) {
+                this.most_views = this.video_detail[i].view_count;
+              }
             }
           }
         })
@@ -210,6 +198,13 @@ export default {
             console.log(JSON.stringify(error));
           }
         });
+    },
+    guess(id, views) {
+      if (views < this.most_views) {
+        console.log('Wrong');
+      } else {
+        console.log('Correct');
+      }
     },
   },
 };
