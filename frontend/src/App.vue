@@ -1,6 +1,5 @@
 <template>
   <div id="wrapper">
-
     <nav class="navbar is-primary">
       <div class="navbar-brand">
         <template v-if="$store.state.isAuthenticated">
@@ -44,6 +43,8 @@
                 <div class="navbar-dropdown is-right">
                   <router-link to="/sync" class="navbar-item">Sync new channel</router-link>
                   <router-link to="/" class="navbar-item">Generate inspiration</router-link>
+                  <router-link to="/play" class="navbar-item">Play</router-link>
+                  <router-link to="/collection" class="navbar-item">My collection</router-link>
                 </div>
               </div>
             </div>

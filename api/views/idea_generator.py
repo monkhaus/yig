@@ -72,7 +72,7 @@ class IdeaGeneratorViewSet(viewsets.ModelViewSet):
                 list_of_videos_to_return.append(choice(videos))
             if number_of_random_vids:
                 for video in range(number_of_random_vids):
-                    videos = Video.objects.all()
+                    videos = Video.objects.exclude(channel_url_id__in=synced_channels)
                     list_of_videos_to_return.append(choice(videos))
 
         return list_of_videos_to_return

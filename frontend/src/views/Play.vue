@@ -32,10 +32,16 @@
             </div>
           </div>
         </div>
+        <div class="columns is-centered">
+          <div class="column is-12-fullhd is-12-desktop is-12-tablet is-12-mobile
+          has-text-centered">
+            <h1 class="has-text-success is-size-3">Which video has more views?</h1>
+          </div>
+        </div>
         <form @submit.prevent="submitForm" class="has-background-info">
         <div class="columns is-multiline is-centered is-mobile">
             <div class="column is-9-fullhd is-10-widescreen is-10-desktop is-10-tablet
-            is-11-mobile py-6">
+            is-11-mobile pb-6">
                     <div class="notification" v-if="errors.length">
                         <p v-for="error in erros" v-bind:key="error">
                           {{ error }}
@@ -46,7 +52,7 @@
                         <div class="field">
                             <div class="control">
                                 <button class="button is-fullwidth is-success">
-                                  Generate Inspiration
+                                  Generate
                                 </button>
                             </div>
                         </div>
@@ -59,24 +65,92 @@
                         v-bind:key="video.id"
                       >
                         <a href="#" @click.prevent="guess(video.id, video.view_count)">
-                        <div class="box has-background-link media-center video-detail-box">
+                        <div class="box has-background-link media-center video-detail-box
+                        is-fullheight">
                           <figure class="image image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
                             <div class="centered">Centered</div>
                           </figure>
                           <br>
-                          <div class="box video-detail-box has-background-link-light">
-                            <h1>{{ video.title }}</h1>
+                          <div class="box video-detail-box
+                          has-background-link-light">
+                            <h1 class="video-title">{{ video.title }}</h1>
                           </div>
                         </div>
                         </a>
+                        <template v-if="guessed_state === true">
+                          <template v-if="video.view_count === most_views">
+                          <div class="columns is-centered is-hidden-mobile pt-2">
+                            <div class="column is-12-mobile is-12-tablet is-12-desktop
+                            ">
+                              <div class="field">
+                                  <div class="control">
+                                      <button
+                                      class="button is-fullwidth is-warning is-focused is-outlined
+                                      no-click">
+                                        {{ video.view_count_string }} views
+                                      </button>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                          </template>
+                          <template v-else>
+                          <div class="columns is-centered is-hidden-mobile pt-2">
+                            <div class="column is-12-mobile is-12-tablet is-12-desktop">
+                              <div class="field">
+                                  <div class="control">
+                                      <button
+                                      class="button is-fullwidth is-link is-outlined no-click">
+                                        {{ video.view_count_string }} views
+                                      </button>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                          </template>
+                        </template>
                       </div>
                     </div>
+                    <template v-if="guessed_correctly !== null">
+                      <template v-if="guessed_correctly === true">
+                      <div class="columns is-centered is-hidden-mobile">
+                        <div class="column is-6-mobile is-6-tablet is-6-desktop">
+                          <div class="field">
+                              <div class="control">
+                                  <button
+                                  class="button is-fullwidth is-warning is-outlined
+                                  is-rounded no-click is-large">
+                                    Well done, you guessed correctly!
+                                  </button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </template>
+                      <template v-else>
+                        <div class="columns is-centered is-hidden-mobile">
+                          <div class="column is-6-mobile is-6-tablet is-6-desktop ">
+                            <div class="field">
+                                <div class="control">
+                                    <button
+                                    class="button is-fullwidth is-link is-outlined
+                                    is-rounded no-click is-large">
+                                      Wrong-o!
+                                    </button>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                    </template>
+
                     <div class="columns is-centered is-hidden-mobile">
                       <div class="column is-6-mobile is-6-tablet is-6-desktop ">
                         <div class="field">
                             <div class="control">
-                                <button class="button is-fullwidth is-success">
+                                <button v-on:keyup.space="submitForm()"
+                                class="button is-fullwidth is-success">
                                   Generate
                                 </button>
                             </div>
@@ -114,8 +188,8 @@
                             <img :src="video.thumbnail_url" alt="thumbnail">
                           </figure>
                           <br>
-                          <div class="box video-detail-box has-background-link-light">
-                            <h1>{{ video.title }}</h1>
+                          <div class="box video-detail-box video-title has-background-link-light">
+                            {{ video.title }}
                           </div>
                         </div>
                         </a>
@@ -123,7 +197,7 @@
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button class="button is-fullwidth is-success">
+                            <button class="button is-fullwidth is-success ">
                               Generate
                             </button>
                         </div>
@@ -147,6 +221,8 @@ export default {
       most_views: 0,
       generate_from: 'SYNCED',
       video_quantity: 'TWO',
+      guessed_state: false,
+      guessed_correctly: null,
       generate_from_options: [
         { text: 'synced channels', value: 'SYNCED' },
         { text: 'random channels', value: 'RANDOM' },
@@ -165,6 +241,8 @@ export default {
   },
   methods: {
     submitForm(e) {
+      this.guessed_state = false;
+      this.guessed_correctly = null;
       axios
         .get('api/v1/generator/', {
           params: {
@@ -178,6 +256,8 @@ export default {
             this.video_detail = [];
             for (let i = 0; i < response.data.length; i += 1) {
               this.video_detail.push(response.data[i]);
+              this.video_detail[i].view_count_string = this.video_detail[i]
+                .view_count.toLocaleString();
               if (this.video_detail[i].view_count > this.most_views) {
                 this.most_views = this.video_detail[i].view_count;
               }
@@ -200,10 +280,11 @@ export default {
         });
     },
     guess(id, views) {
+      this.guessed_state = true;
       if (views < this.most_views) {
-        console.log('Wrong');
+        this.guessed_correctly = false;
       } else {
-        console.log('Correct');
+        this.guessed_correctly = true;
       }
     },
   },
@@ -212,5 +293,5 @@ export default {
 
 <style lang="scss">
 @import 'mystyles.scss';
-
+.no-click {pointer-events: none;}
 </style>

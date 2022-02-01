@@ -2,8 +2,11 @@
   <div class="sync">
     <template v-if="$store.state.isAuthenticated">
         <div class="columns">
-          <div class="column is-2 is-offset-1 py-5">
+          <div class="column is-2 is-offset-1 py-5 pr-0 mr-0">
             <router-link to="/" class="button is-link">-> Generate inspiration</router-link>
+          </div>
+          <div class="column is-1 py-5 ml-0">
+            <button class="button is-link is-light">Toggle edit mode</button>
           </div>
         </div>
         <div class="columns is-multiline py-2">
@@ -13,12 +16,21 @@
             v-for="channel in my_synced_channels"
             v-bind:key="channel.channel_id"
           >
+            <template v-if="edit_mode === true">
+            <div class="has-text-centered pb-1">
+              <a class="button is-link is-focused
+              is-small px-2 has-text-centered is-rounded">
+                &#10006;
+              </a>
+            </div>
+            </template>
+
             <a :href="channel.channel_url" target="_blank">
             <div class="has-text-centered">
               <figure class="image is-128x128 is-inline-block">
                   <img class="is-rounded" :src="channel.channel_logo"/>
               </figure>
-              <p>{{ channel.channel_name }}</p>
+              <p class="has-text-warning">{{ channel.channel_name }}</p>
             </div>
             </a>
           </div>
@@ -63,6 +75,7 @@ export default {
       errors: [],
       channel: '',
       my_synced_channels: [],
+      edit_mode: true,
     };
   },
   mounted() {
