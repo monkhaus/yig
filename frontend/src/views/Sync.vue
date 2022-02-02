@@ -6,7 +6,8 @@
             <router-link to="/" class="button is-link">-> Generate inspiration</router-link>
           </div>
           <div class="column is-1 py-5 ml-0">
-            <button class="button is-link is-light">Toggle edit mode</button>
+            <button class="button is-link is-light"
+            @click.prevent="toggleEditMode">Toggle edit mode</button>
           </div>
         </div>
         <div class="columns is-multiline py-2">
@@ -75,7 +76,7 @@ export default {
       errors: [],
       channel: '',
       my_synced_channels: [],
-      edit_mode: true,
+      edit_mode: false,
     };
   },
   mounted() {
@@ -131,6 +132,10 @@ export default {
             console.log(JSON.stringify(error));
           }
         });
+    },
+    toggleEditMode() {
+      this.edit_mode = !this.edit_mode;
+      console.log(this.edit_mode);
     },
   },
 };

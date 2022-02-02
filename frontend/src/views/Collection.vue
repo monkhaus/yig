@@ -16,7 +16,7 @@
                           {{ error }}
                         </p>
                     </div>
-                    <div class="columns is-centered is-multiline">
+                    <div class="columns is-multiline">
                       <div
                         class="column is-3-desktop is-6-tablet is-10-mobile is-offset-1-mobile"
                         v-for="video in video_detail"
@@ -28,12 +28,13 @@
                       </button>
 
                         <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
-                        <div class="box has-background-link media-center video-detail-box">
-                          <figure class="image image is-16by9">
+                        <div class="box has-background-link media-center
+                        video-detail-box-collection">
+                          <figure class="image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
                           </figure>
                           <br>
-                          <div class="box video-detail-box has-background-link-light">
+                          <div class="box has-background-link-light">
                             <h1>{{ video.title }}</h1>
                             <p class="has-text-right is-size-7">
                               <strong>{{ video.view_count }}</strong>
@@ -69,12 +70,12 @@
                         v-bind:key="video.id"
                       >
                         <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
-                        <div class="box has-background-link media-center video-detail-box">
-                          <figure class="image image is-16by9">
+                        <div class="box has-background-link media-center">
+                          <figure class="image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
                           </figure>
                           <br>
-                          <div class="box video-detail-box has-background-link-light">
+                          <div class="box has-background-link-light">
                             <h1>{{ video.title }}</h1>
                             <p class="has-text-right is-size-7">
                               <strong>{{ video.view_count }}</strong>
@@ -171,5 +172,7 @@ export default {
 
 <style lang="scss">
 @import 'mystyles.scss';
-
+.video-detail-box-collection {
+  height: 90%;
+}
 </style>

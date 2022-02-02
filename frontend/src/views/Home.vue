@@ -83,12 +83,12 @@
                       </template>
 
                         <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
-                        <div class="box has-background-link media-center video-detail-box">
-                          <figure class="image image is-16by9">
+                        <div class="box has-background-link media-center video-detail-box-home">
+                          <figure class="image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
                           </figure>
                           <br>
-                          <div class="box description-box has-background-link-light">
+                          <div class="box has-background-link-light">
                             <h1>{{ video.title }}</h1>
                             <br>
                             <p class="has-text-right is-size-7 view-count-location">
@@ -99,7 +99,7 @@
                         </a>
                       </div>
                     </div>
-                    <div class="columns is-centered is-hidden-mobile">
+                    <div class="columns is-centered is-hidden-mobile pt-2 mt-2">
                       <div class="column is-6-mobile is-6-tablet is-6-desktop ">
                         <div class="field">
                             <div class="control">
@@ -137,7 +137,7 @@
                       >
                         <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
                         <div class="box has-background-link media-center video-detail-box">
-                          <figure class="image image is-16by9">
+                          <figure class="image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
                           </figure>
                           <br>
@@ -258,12 +258,7 @@ export default {
 <style lang="scss">
 @import 'mystyles.scss';
 .no-click {pointer-events: none;}
-.video-detail-box {
+.video-detail-box-home {
     height: 95%;
-
-}
-
-.description-box {
-  height: 28%
 }
 </style>

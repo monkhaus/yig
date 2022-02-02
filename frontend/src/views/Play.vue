@@ -65,16 +65,14 @@
                         v-bind:key="video.id"
                       >
                         <a href="#" @click.prevent="guess(video.id, video.view_count)">
-                        <div class="box has-background-link media-center video-detail-box
-                        is-fullheight">
-                          <figure class="image image is-16by9">
+                        <div class="box has-background-link media-center video-detail-box">
+                          <figure class="image is-16by9">
                             <img :src="video.thumbnail_url" alt="thumbnail">
                             <div class="centered">Centered</div>
                           </figure>
                           <br>
-                          <div class="box video-detail-box
-                          has-background-link-light">
-                            <h1 class="video-title">{{ video.title }}</h1>
+                          <div class="box has-background-link-light">
+                            <h1>{{ video.title }}</h1>
                           </div>
                         </div>
                         </a>
@@ -188,7 +186,7 @@
                             <img :src="video.thumbnail_url" alt="thumbnail">
                           </figure>
                           <br>
-                          <div class="box video-detail-box video-title has-background-link-light">
+                          <div class="box video-title has-background-link-light">
                             {{ video.title }}
                           </div>
                         </div>
@@ -294,4 +292,8 @@ export default {
 <style lang="scss">
 @import 'mystyles.scss';
 .no-click {pointer-events: none;}
+.video-detail-box {
+    height: 100%;
+
+}
 </style>

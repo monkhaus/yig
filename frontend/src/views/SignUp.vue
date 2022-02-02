@@ -1,7 +1,7 @@
 <template>
     <div class="page-signup">
         <div class="columns">
-            <div class="column is-4 is-offset-4">
+            <div class="column is-4 is-offset-4 my-6">
                 <form  class="box" @submit.prevent="submitForm">
                     <div class="field">
                         <label>E-mail</label>
