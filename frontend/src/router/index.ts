@@ -7,6 +7,7 @@ import SignUp from '../views/SignUp.vue';
 import LogIn from '../views/LogIn.vue';
 import Play from '../views/Play.vue';
 import Sync from '../views/Sync.vue';
+import How from '../views/How.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/about',
     name: 'About',
     component: About,
+  },
+  {
+    path: '/how',
+    name: 'How',
+    component: How,
   },
   {
     path: '/sign-up',

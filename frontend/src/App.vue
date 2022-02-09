@@ -54,7 +54,7 @@
             <div class="navbar-item is-hidden-touch">
               <div class="navbar-item has-dropdown is-hoverable desktop-navigation">
                 <a class="navbar-link">
-                  {{ username }}
+                  Menu
                 </a>
                 <div class="navbar-dropdown is-right">
                   <router-link class="navbar-item" to="/">
@@ -73,6 +73,10 @@
           <!-- start: navbar if user is signed out -->
           <template v-else>
             <router-link to="/" class="navbar-item has-text-success">Home</router-link>
+            <router-link to="/about" class="navbar-item has-text-success">About</router-link>
+            <router-link to="/how" class="navbar-item has-text-success">
+              How it works!
+            </router-link>
             <div class="navbar-item is-hidden-touch">
               <div class="buttons">
                 <router-link to="/log-in" class="button is-medium is-link">

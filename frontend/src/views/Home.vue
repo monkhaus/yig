@@ -1,6 +1,7 @@
 <template>
-  <div class="home container py-3">
+  <div class="home">
     <template v-if="$store.state.isAuthenticated">
+      <div class="container py-3">
         <div class="columns is-centered">
           <div class="column is-9-fullhd is-10-desktop is-10-tablet is-10-mobile
           has-text-centered-mobile py-5 is-offset-1-mobile">
@@ -47,11 +48,6 @@
         <div class="columns is-multiline is-centered is-mobile">
             <div class="column is-9-fullhd is-10-widescreen is-10-desktop is-10-tablet
             is-11-mobile py-6">
-                    <div class="notification" v-if="errors.length">
-                        <p v-for="error in erros" v-bind:key="error">
-                          {{ error }}
-                        </p>
-                    </div>
                     <div class="columns is-centered is-mobile is-hidden-tablet">
                       <div class="column is-10-mobile is-6-tablet is-6-desktop ">
                         <div class="field">
@@ -63,6 +59,7 @@
                         </div>
                       </div>
                     </div>
+                    <template v-if="video_detail.length > 0">
                     <div class="columns is-centered is-multiline">
                       <div
                         class="column is-6-desktop is-6-tablet is-10-mobile
@@ -99,6 +96,7 @@
                         </a>
                       </div>
                     </div>
+                    </template>
                     <div class="columns is-centered is-hidden-mobile pt-2 mt-2">
                       <div class="column is-6-mobile is-6-tablet is-6-desktop ">
                         <div class="field">
@@ -113,54 +111,104 @@
             </div>
         </div>
         </form>
+      </div>
     </template>
 
     <template v-else>
-        <div class="columns">
-            <div class="column is-3-fullhd is-3-desktop is-10-tablet is-offset-4-desktop
-            is-offset-1-tablet is-12-mobile py-6 box-equal-height">
-                <form @submit.prevent="submitForm">
-                    <div class="notification" v-if="errors.length">
-                        <p
-                            v-for="error in erros"
-                            v-bind:key="error"
-                        >
-                            {{ error }}
-                        </p>
-                    </div>
-                    <div class="columns is-multiline-mobile is-centered">
-                      <div
-                        class="column is-12-desktop is-one-third-tablet is-10-mobile
-                        is-offset-1-mobile"
-                        v-for="video in video_detail"
-                        v-bind:key="video.id"
-                      >
-                        <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
-                        <div class="box has-background-link media-center video-detail-box">
-                          <figure class="image is-16by9">
-                            <img :src="video.thumbnail_url" alt="thumbnail">
-                          </figure>
-                          <br>
-                          <div class="box video-description-box has-background-link-light">
-                            <h1>{{ video.title }}</h1>
-                            <p class="has-text-right is-size-7 mr-0 pr-0">
-                              <strong>{{ video.view_count }}</strong>
-                            </p>
-                          </div>
-                        </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-fullwidth is-success">
-                              Generate Inspiration
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+      <section class="hero is-medium is-info">
+        <div class="hero-body">
+          <p class="title">
+            YouTube Video Idea Generator
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up">
+              Get Inspiration for your YouTube videos.
+            </router-link>
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up" class="button is-danger is-rounded">
+              Sign up here
+            </router-link>
+          </p>
         </div>
+      </section>
+      <section class="hero is-large is-info sync_image_container">
+        <div class="hero-body my-0 has-text-right">
+          <p class="title">
+            Sync
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up">
+             Synchronise your favourite channels for inspiration.
+            </router-link>
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up" class="button is-danger is-rounded">
+              Sign up here
+            </router-link>
+          </p>
+        </div>
+      </section>
+      <section class="hero is-large is-info">
+        <div class="hero-body py-6">
+          <p class="title">
+            Inspire
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up">
+              Get Inspiration for your YouTube videos.
+            </router-link>
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up" class="button is-danger is-rounded">
+              Sign up here
+            </router-link>
+          </p>
+        </div>
+      </section>
+      <section class="hero is-large is-info home_image_container">
+        <div class="hero-body">
+          <p class="title">
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up">
+            </router-link>
+          </p>
+          <p class="subtitle">
+            <br><br><br><br><br><br><br><br>
+          </p>
+        </div>
+      </section>
+      <section class="hero is-large is-info">
+        <div class="hero-body py-6">
+          <p class="title">
+            Play
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up">
+              Get an intuitive understanding of good thumbnails via this mini game
+            </router-link>
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up" class="button is-danger is-rounded">
+              Sign up here
+            </router-link>
+          </p>
+        </div>
+      </section>
+      <section class="hero is-large is-info play_image_container">
+        <div class="hero-body">
+          <p class="title">
+          </p>
+          <p class="subtitle">
+            <router-link to="/sign-up">
+            </router-link>
+          </p>
+          <p class="subtitle">
+            <br><br><br><br><br><br><br><br>
+          </p>
+        </div>
+      </section>
     </template>
   </div>
 </template>

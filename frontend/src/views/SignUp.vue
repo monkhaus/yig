@@ -17,7 +17,7 @@
                     </div>
                     <div class="notification is-danger" v-if="errors.length">
                         <p
-                            v-for="error in erros"
+                            v-for="error in errors"
                             v-bind:key="error"
                         >
                             {{ error }}
@@ -57,6 +57,9 @@ export default {
         username: this.username,
         password: this.password,
       };
+      if (this.$store.state.token) {
+        this.$store.commit('removeToken');
+      }
       axios
         .post('api/v1/users/', formData)
         .then((response) => {

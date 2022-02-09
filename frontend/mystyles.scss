@@ -6,11 +6,24 @@ $success: #edf2f4;
 $link: #d90429;
 $warning: #44CF6C;
 
+.sync_image_container {
+    overflow: hidden;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.55), rgba(255,255,255,.55)), url("/img/icons/sync_channels.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.play_image_container {
+    overflow: hidden;
+    background-image: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,.55)), url("/img/icons/play.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 .home_image_container {
     overflow: hidden;
-    background-image: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,.55)), url("https://quotefancy.com/media/wallpaper/3840x2160/6597218-Elon-Musk-Quote-One-of-the-really-tough-things-is-figuring-out.jpg");
+    background-image: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,.55)), url("/img/icons/home.png");
     background-repeat: no-repeat;
-    background-size: cover;
     background-position: center center;
 }
 

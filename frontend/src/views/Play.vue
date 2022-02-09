@@ -79,8 +79,7 @@
                         <template v-if="guessed_state === true">
                           <template v-if="video.view_count === most_views">
                           <div class="columns is-centered is-hidden-mobile pt-2">
-                            <div class="column is-12-mobile is-12-tablet is-12-desktop
-                            ">
+                            <div class="column is-12-mobile is-12-tablet is-12-desktop">
                               <div class="field">
                                   <div class="control">
                                       <button
@@ -118,7 +117,7 @@
                               <div class="control">
                                   <button
                                   class="button is-fullwidth is-warning is-outlined
-                                  is-rounded no-click is-large">
+                                  is-rounded no-click is-large mt-6">
                                     Well done, you guessed correctly!
                                   </button>
                               </div>
@@ -133,7 +132,7 @@
                                 <div class="control">
                                     <button
                                     class="button is-fullwidth is-link is-outlined
-                                    is-rounded no-click is-large">
+                                    is-rounded no-click is-large mt-6">
                                       Wrong-o!
                                     </button>
                                 </div>

@@ -79,9 +79,10 @@
 </template>
 
 <script lang="ts">
+import axios from 'axios';
 
 export default {
-  name: 'About',
+  name: 'How',
   data() {
     return {
       errors: [],
