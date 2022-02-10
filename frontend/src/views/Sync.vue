@@ -20,7 +20,8 @@
             <template v-if="edit_mode === true">
             <div class="has-text-centered pb-1">
               <a class="button is-link is-focused
-              is-small px-2 has-text-centered is-rounded">
+              is-small px-2 has-text-centered is-rounded"
+              @click.prevent="desync(channel.id, channel)">
                 &#10006;
               </a>
             </div>
@@ -45,18 +46,21 @@
                             <input type="text" name="channel" class="input" v-model="channel">
                         </div>
                     </div>
-                    <div class="notification is-danger" v-if="errors.length">
-                        <p
-                            v-for="error in erros"
-                            v-bind:key="error"
-                        >
-                            {{ error }}
-                        </p>
-                    </div>
                     <div class="field">
                         <div class="control has-text-centered">
-                            <button class="button is-primary is-fullwidth">Sync</button>
-                            <p class="is-size-7">This may take a few seconds.</p>
+                            <template v-if="this.syncing === true">
+                              <button class="button is-primary is-fullwidth is-loading">
+                                Sync
+                              </button>
+                            </template>
+                            <template v-else>
+                              <button class="button is-primary is-fullwidth">Sync</button>
+                            </template>
+                              <p class="is-size-7 has-text-danger">
+                                <srong>
+                                  Channels with thousands of videos may take a few minutes!
+                                </srong>
+                              </p>
                         </div>
                     </div>
                 </form>
@@ -77,6 +81,8 @@ export default {
       channel: '',
       my_synced_channels: [],
       edit_mode: false,
+      syncing: false,
+      channel_input_box: '',
     };
   },
   mounted() {
@@ -87,14 +93,18 @@ export default {
       const formdata = {
         channel_url: this.channel,
       };
+      this.syncing = true;
+      this.channel = '';
       axios
         .post('api/v1/sync/', formdata)
         .then((response) => {
           this.my_synced_channels = [];
           this.getSyncedChannels();
+          this.syncing = false;
         })
         .catch((error) => {
           if (error.response) {
+            this.syncing = false;
             for (const property in error.response.data) {
               if (error.response.data) {
                 this.errors.push(`${property}: ${error.response.data[property]}`);
@@ -109,6 +119,7 @@ export default {
         });
     },
     getSyncedChannels() {
+      this.my_synced_channels = [];
       axios
         .get('api/v1/sync/')
         .then((response) => {
@@ -116,6 +127,7 @@ export default {
             for (let i = 0; i < response.data[0].channels.length; i += 1) {
               this.my_synced_channels.push(response.data[0].channels[i]);
             }
+            this.syncing = false;
           }
         })
         .catch((error) => {
@@ -136,6 +148,16 @@ export default {
     toggleEditMode() {
       this.edit_mode = !this.edit_mode;
       console.log(this.edit_mode);
+    },
+    desync(id, channel) {
+      axios
+        .delete(`api/v1/sync/${id}`)
+        .then((response) => {
+          this.getSyncedChannels();
+        })
+        .catch((error) => {
+          // catch error
+        });
     },
   },
 };

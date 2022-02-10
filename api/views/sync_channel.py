@@ -1,4 +1,5 @@
 import json
+from os import sync
 import random
 import re
 
@@ -24,7 +25,7 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(user=self.request.user)
 
     def create(self, request):
-        """Sync channel with db and user"""
+        """Sync channel with db and user"""      
 
         try:
             channel_soup = BeautifulSoup(requests.get(request.data.get('channel_url'),cookies={'CONSENT': 'YES+1'}).text,"html.parser")
@@ -47,9 +48,10 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
             pass
 
         channel, created = Channel.objects.get_or_create(channel_id=channel_id)
- 
+
         if channel:
             channel.channel_id = channel_id
+            channel.channel_url = request.data.get('channel_url')
             channel.channel_name = channel_name
             channel.channel_logo = channel_logo
             channel.channel_subscribers = channel_subscribers
@@ -67,15 +69,24 @@ class SyncChannelViewSet(viewsets.ModelViewSet):
         video_objects = []
         for video in videos:
             if video['videoId'] not in stored_videos:
-                video_objects.append(Video(
-                    channel_url=channel,
-                    youtube_video_id=video['videoId'],
-                    title= video['title']['runs'][0]['text'], 
-                    thumbnail_url= video['thumbnail']['thumbnails'][3]['url'],
-                    view_count= int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
-                ))
+                try: 
+                    video_objects.append(Video(
+                        channel_url=channel,
+                        youtube_video_id=video['videoId'],
+                        title= video['title']['runs'][0]['text'], 
+                        thumbnail_url= video['thumbnail']['thumbnails'][3]['url'],
+                        view_count= int(video['viewCountText']['simpleText'].replace(',', '').replace('views', '').strip())
+                    ))
+                except:
+                    pass
 
         if video_objects:
             Video.objects.bulk_create(video_objects)
 
         return Response(status.HTTP_201_CREATED)
+    
+    def destroy(self, request, pk):
+        user_channel_relation = UserSyncedChannel.objects.get(user=request.user)
+        channel = Channel.objects.get(pk=pk)
+        user_channel_relation.channels.remove(channel)
+        return Response(status.HTTP_200_OK)

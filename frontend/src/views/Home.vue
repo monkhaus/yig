@@ -149,8 +149,8 @@
           </p>
         </div>
       </section>
-      <section class="hero is-large is-info">
-        <div class="hero-body py-6">
+      <section class="hero is-large is-info home_image_container">
+        <div class="hero-body mt-2">
           <p class="title">
             Inspire
           </p>
@@ -166,27 +166,14 @@
           </p>
         </div>
       </section>
-      <section class="hero is-large is-info home_image_container">
-        <div class="hero-body">
+      <section class="hero is-large is-info collect_image_container">
+        <div class="hero-body has-text-right">
           <p class="title">
+            Collect
           </p>
           <p class="subtitle">
             <router-link to="/sign-up">
-            </router-link>
-          </p>
-          <p class="subtitle">
-            <br><br><br><br><br><br><br><br>
-          </p>
-        </div>
-      </section>
-      <section class="hero is-large is-info">
-        <div class="hero-body py-6">
-          <p class="title">
-            Play
-          </p>
-          <p class="subtitle">
-            <router-link to="/sign-up">
-              Get an intuitive understanding of good thumbnails via this mini game
+              Save the videos that inspire you.
             </router-link>
           </p>
           <p class="subtitle">
@@ -199,13 +186,17 @@
       <section class="hero is-large is-info play_image_container">
         <div class="hero-body">
           <p class="title">
+            Play
           </p>
           <p class="subtitle">
             <router-link to="/sign-up">
+              Get an intuitive understanding of good thumbnails via this mini game
             </router-link>
           </p>
           <p class="subtitle">
-            <br><br><br><br><br><br><br><br>
+            <router-link to="/sign-up" class="button is-danger is-rounded">
+              Sign up here
+            </router-link>
           </p>
         </div>
       </section>
@@ -242,37 +233,39 @@ export default {
   },
   methods: {
     submitForm(e) {
-      axios
-        .get('api/v1/generator/', {
-          params: {
-            generate_from: this.generate_from,
-            video_quantity: this.video_quantity,
-          },
-        })
-        .then((response) => {
-          if (response.data) {
-            this.video_detail = [];
-            for (let i = 0; i < response.data.length; i += 1) {
-              this.video_detail.push(response.data[i]);
-              this.video_detail[i].added = false;
-              this.video_detail[i].view_count = this.video_detail[i].view_count.toLocaleString();
-            }
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            for (const property in error.response.data) {
-              if (error.response.data) {
-                this.errors.push(`${property}: ${error.response.data[property]}`);
+      if (this.$store.state.isAuthenticated) {
+        axios
+          .get('api/v1/generator/', {
+            params: {
+              generate_from: this.generate_from,
+              video_quantity: this.video_quantity,
+            },
+          })
+          .then((response) => {
+            if (response.data) {
+              this.video_detail = [];
+              for (let i = 0; i < response.data.length; i += 1) {
+                this.video_detail.push(response.data[i]);
+                this.video_detail[i].added = false;
+                this.video_detail[i].view_count = this.video_detail[i].view_count.toLocaleString();
               }
             }
-            console.log(JSON.stringify(error.response.data));
-          } else if (error.message) {
-            console.log(JSON.stringify(error.message));
-          } else {
-            console.log(JSON.stringify(error));
-          }
-        });
+          })
+          .catch((error) => {
+            if (error.response) {
+              for (const property in error.response.data) {
+                if (error.response.data) {
+                  this.errors.push(`${property}: ${error.response.data[property]}`);
+                }
+              }
+              console.log(JSON.stringify(error.response.data));
+            } else if (error.message) {
+              console.log(JSON.stringify(error.message));
+            } else {
+              console.log(JSON.stringify(error));
+            }
+          });
+      }
     },
     storeInCollection(id, video) {
       const index = this.video_detail.indexOf(video);
