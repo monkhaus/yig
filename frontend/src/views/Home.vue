@@ -121,15 +121,13 @@
             YouTube Video Idea Generator
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up">
+            <router-link to="/log-in">
               Get Inspiration for your YouTube videos.
             </router-link>
           </p>
-          <p class="subtitle">
-            <router-link to="/sign-up" class="button is-danger is-rounded">
-              Sign up here
-            </router-link>
-          </p>
+     
+          <div class="subtitle" id="google-signin-btn"></div>
+        
         </div>
       </section>
       <section class="hero is-large is-info sync_image_container">
@@ -138,12 +136,12 @@
             Sync
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up">
+            <router-link to="/log-in">
              Synchronise your favourite channels for inspiration.
             </router-link>
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up" class="button is-danger is-rounded">
+            <router-link to="/log-in" class="button is-danger is-rounded">
               Sign up here
             </router-link>
           </p>
@@ -155,12 +153,12 @@
             Inspire
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up">
+            <router-link to="/log-in">
               Get Inspiration for your YouTube videos.
             </router-link>
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up" class="button is-danger is-rounded">
+            <router-link to="/log-in" class="button is-danger is-rounded">
               Sign up here
             </router-link>
           </p>
@@ -172,12 +170,12 @@
             Collect
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up">
+            <router-link to="/log-in">
               Save the videos that inspire you.
             </router-link>
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up" class="button is-danger is-rounded">
+            <router-link to="/log-in" class="button is-danger is-rounded">
               Sign up here
             </router-link>
           </p>
@@ -189,12 +187,12 @@
             Play
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up">
+            <router-link to="/log-in">
               Get an intuitive understanding of good thumbnails via this mini game
             </router-link>
           </p>
           <p class="subtitle">
-            <router-link to="/sign-up" class="button is-danger is-rounded">
+            <router-link to="/log-in" class="button is-danger is-rounded">
               Sign up here
             </router-link>
           </p>
@@ -229,7 +227,13 @@ export default {
     };
   },
   mounted() {
-    this.submitForm();
+    this.submitForm(),
+    gapi.signin2.render('google-signin-btn', { // this is the button "id"
+      onsuccess: this.onSignIn, // note, no "()" here
+      theme: 'light',
+      width: 240,
+      height: 50,
+    })
   },
   methods: {
     submitForm(e) {
@@ -275,7 +279,7 @@ export default {
       axios
         .post('api/v1/video/', { id })
         .then((response) => {
-          console.log(response);
+          //
         })
         .catch((error) => {
           if (error.response) {
@@ -292,6 +296,38 @@ export default {
           }
         });
     },
+    submitGoogleForm(access_token) {
+      axios.defaults.headers.common['Authorization'] = '';
+      axios
+        .post('auth/convert-token', {
+          token: access_token,
+          grant_type: 'convert_token',
+          backend: 'google-oauth2',
+          client_id: 'wdGmY8cErFJxLG3aOMtksRghRklzeE9dHC13x5US',
+          client_secret: 'ZfbCBer3namUYKSoiQ6MZymDwYfpGOV366EsKhXSRWPxDHmbOfGIpdOh5y4O8IIrQ5WfTX0azbg4qmwwhRIzJNgNz30LMry1FQdpjKGKy3ZaK5Z6VFwODUBZ4OTwjLsm',
+          })
+        .then((response) => {
+          this.$store.state.access_token = response.data.access_token;
+          this.$store.state.refresh_token = response.data.refresh_token;
+          localStorage.setItem('access_token', this.$store.state.access_token);
+          localStorage.setItem('refresh_token', this.$store.state.refresh_token);
+
+          axios.defaults.headers.common['Authorization'] = `Bearer ${this.$store.state.access_token}`;
+          this.$router.go({ path: '/' });
+          
+        });
+    },
+    onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      var id_token = googleUser.getAuthResponse().id_token;
+      var access_token = googleUser.getAuthResponse(true).access_token;
+      // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      // console.log('Name: ' + profile.getName());
+      // console.log('Image URL: ' + profile.getImageUrl());
+      // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+      this.submitGoogleForm(access_token);
+    },
   },
 };
 </script>
@@ -301,5 +337,9 @@ export default {
 .no-click {pointer-events: none;}
 .video-detail-box-home {
     height: 95%;
+}
+
+#google-signin-btn {
+  border-radius: 50px;
 }
 </style>

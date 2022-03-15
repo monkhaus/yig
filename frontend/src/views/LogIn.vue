@@ -2,8 +2,20 @@
     <div class="page-login">
         <div class="columns">
             <div class="column is-4 is-offset-4 my-6">
-                <form class="box" @submit.prevent="submitForm">
+                <form class="box has-background-light" @submit.prevent="submitForm">
                     <div class="field">
+                        <label><strong>+ Synchronise your favourite YouTube channels</strong></label>
+                    </div>
+                    <div class="field">
+                        <label><strong>+ Get Inspiration for your own YouTube videos.</strong></label>
+                    </div>
+                    <div class="field">
+                        <label><strong>+ Save the videos that inspire you.</strong></label>
+                    </div>
+                    <div class="field">
+                        <label><strong>+ Get an intuitive understanding of good thumbnails via the mini game.</strong></label>
+                    </div>  
+                    <!-- <div class="field">
                         <label>E-mail</label>
                         <div class="control">
                             <input type="email" name="username" class="input" v-model="username">
@@ -27,12 +39,13 @@
                         <div class="control">
                             <button class="button is-primary is-fullwidth">Log in</button>
                         </div>
-                    </div>
+                    </div> -->
                     <div id="sign-up-form"></div>
                     <div class="buttons is-centered">
-                        <router-link to="/sign-up" class="button is-centered is-success mgh-small">
+                        <!-- <router-link to="/sign-up" class="button is-centered is-success mgh-small">
                             Create New Account
-                        </router-link>
+                        </router-link> -->
+                    <div id="google-signin-btn"></div>
                     </div>
                 </form>
             </div>
@@ -50,7 +63,15 @@ export default {
       username: '',
       password: '',
       errors: [],
-    };
+    }
+  },
+  mounted() {
+    gapi.signin2.render('google-signin-btn', { // this is the button "id"
+      onsuccess: this.onSignIn, // note, no "()" here
+      theme: 'light',
+      width: 240,
+      height: 50,
+    })
   },
   methods: {
     submitForm(e) {
@@ -84,6 +105,36 @@ export default {
           }
         });
     },
+    submitGoogleForm(access_token) {
+      axios.defaults.headers.common['Authorization'] = '';
+      axios
+        .post('auth/convert-token', {
+          token: access_token,
+          grant_type: 'convert_token',
+          backend: 'google-oauth2',
+          client_id: 'wdGmY8cErFJxLG3aOMtksRghRklzeE9dHC13x5US',
+          client_secret: 'ZfbCBer3namUYKSoiQ6MZymDwYfpGOV366EsKhXSRWPxDHmbOfGIpdOh5y4O8IIrQ5WfTX0azbg4qmwwhRIzJNgNz30LMry1FQdpjKGKy3ZaK5Z6VFwODUBZ4OTwjLsm',
+          })
+        .then((response) => {
+          this.$store.state.access_token = response.data.access_token;
+          this.$store.state.refresh_token = response.data.refresh_token;
+          localStorage.setItem('access_token', this.$store.state.access_token);
+          localStorage.setItem('refresh_token', this.$store.state.refresh_token);
+
+          axios.defaults.headers.common['Authorization'] = `Bearer ${this.$store.state.access_token}`;
+          this.$router.push({ path: '/' });
+        });
+    },
+    onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      var access_token = googleUser.getAuthResponse(true).access_token;
+      // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      // console.log('Name: ' + profile.getName());
+      // console.log('Image URL: ' + profile.getImageUrl());
+      // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+      this.submitGoogleForm(access_token);
+    },
   },
 };
 </script>
@@ -91,7 +142,7 @@ export default {
 <style>
 #sign-up-form {
     border-bottom: 1px solid #dadde1;
-    margin: 15px 10px;
-    padding: 20px 10px;
+    margin: 10px 10px;
+    padding: 5px 10px;
 }
 </style>

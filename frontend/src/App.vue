@@ -30,10 +30,13 @@
               Signed in as<strong>&nbsp;{{username }}</strong>
             </router-link>
             <hr class="navbar-divider logout-burger-divider">
-            <button class="button is-inverted is-dark is-fullwidth
+            <!-- <button class="button is-inverted is-dark is-fullwidth
             logout-menu is-hidden-desktop" @click="logUserOut()">
               Logout
-            </button>
+            </button> -->
+            <a href="#" class="button is-dark is-inverted is-fullwidth is-hidden-desktop" @click="signOut()">
+              Logout
+            </a>
             <!-- end: This only displays on mobile and tablet -->
 
             <!-- start: This only display on desktop. Drop down for ading new things -->
@@ -60,9 +63,9 @@
                   <router-link class="navbar-item" to="/">
                     Signed in as<strong>&nbsp;{{username }}</strong>
                   </router-link>
-                  <button class="button is-danger is-inverted is-fullwidth" @click="logUserOut()">
+                  <a href="#" class="button is-danger is-inverted is-fullwidth" @click="signOut()">
                     Logout
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -113,9 +116,14 @@ export default {
   name: 'App',
   beforeCreate() {
     this.$store.commit('initializeStore');
+    // if (this.$store.state.token) {
+    //   axios.defaults.headers.common['Authorization'] = `Token ${this.$store.state.token}`;
+    // } else {
+    //   axios.defaults.headers.common['Authorization'] = '';
+    // }
 
-    if (this.$store.state.token) {
-      axios.defaults.headers.common['Authorization'] = `Token ${this.$store.state.token}`;
+    if (this.$store.state.access_token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.$store.state.access_token}`;
     } else {
       axios.defaults.headers.common['Authorization'] = '';
     }
@@ -128,6 +136,7 @@ export default {
   },
   mounted() {
     this.desktopNavigation();
+    this.onLoad();
   },
   methods: {
     desktopNavigation() {
@@ -190,13 +199,50 @@ export default {
           });
       }
     },
+    getRefreshToken() {
+      axios
+        .post('/auth/token', {
+          grant_type: 'refresh_token',
+          refresh_token: this.$store.state.refresh_token,
+          backend: 'google-oauth2',
+          client_id: 'wdGmY8cErFJxLG3aOMtksRghRklzeE9dHC13x5US',
+          client_secret: 'ZfbCBer3namUYKSoiQ6MZymDwYfpGOV366EsKhXSRWPxDHmbOfGIpdOh5y4O8IIrQ5WfTX0azbg4qmwwhRIzJNgNz30LMry1FQdpjKGKy3ZaK5Z6VFwODUBZ4OTwjLsm',
+          })
+        .then((response) => {
+          console.log(response);
+          this.$store.state.access_token = response.data.access_token;
+          this.$store.state.refresh_token = response.data.refresh_token;
+
+          localStorage.setItem('access_token', this.$store.state.access_token);
+          localStorage.setItem('refresh_token', this.$store.state.refresh_token);
+
+          axios.defaults.headers.common['Authorization'] = `Bearer ${this.$store.state.access_token}`;
+          // this.$router.push({ path: '/' });
+          
+        });
+    },
+    signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      this.$store.state.isAuthenticated = false;
+      localStorage.setItem('access_token', '');
+      localStorage.setItem('refresh_token', '');
+      this.$store.state.access_token = '';
+      this.$store.state.refresh_token = '';
+    },
+    onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+    }
   },
   watch: {
     $route(to, from) {
       this.getMe();
       document.title = to.meta.title || 'Vig';
     },
-    immediate: true,
   },
 };
 </script>

@@ -15,10 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from api.views import GoogleLogin
+# from api.views.google_sign_in import google_callback
+# from allauth.socialaccount.providers.google import views as google_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.authtoken')),
-    path('api/v1/', include('api.urls'))
+    path('api/v1/', include('api.urls')),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('auth/', include('drf_social_oauth2.urls', namespace='drf'))
+    # path('accounts/', include('allauth.urls')),
+    # path('auth/google/', GoogleLogin.as_view(), name='google_login'),
+    # path('auth/google/callback/', google_callback, name='google_callback'),
+    # path('auth/google/url/', google_views.oauth2_login),
 ]
