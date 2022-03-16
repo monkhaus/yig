@@ -27,3 +27,4 @@ dj-rest-auth
 drf_social_oauth2
 django-oauth-toolkit
 social-auth-app-django
+paypal-checkout-serversdk

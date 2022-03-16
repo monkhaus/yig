@@ -34,6 +34,7 @@ coreschema==0.0.4
 cryptography==36.0.1
     # via
     #   jwcrypto
+    #   pyopenssl
     #   python-jose
     #   social-auth-core
 defusedxml==0.7.1
@@ -96,6 +97,10 @@ oauthlib==3.2.0
     #   django-oauth-toolkit
     #   requests-oauthlib
     #   social-auth-core
+paypal-checkout-serversdk==1.0.1
+    # via -r requirements.in
+paypalhttp==1.0.1
+    # via paypal-checkout-serversdk
 pep517==0.12.0
     # via
     #   -r requirements.in
@@ -114,6 +119,8 @@ pyjwt==2.3.0
     # via
     #   djangorestframework-simplejwt
     #   social-auth-core
+pyopenssl==22.0.0
+    # via paypalhttp
 python-jose[cryptography]==3.3.0
     # via drf-social-oauth2
 python3-openid==3.2.0
@@ -128,6 +135,7 @@ requests==2.27.1
     #   -r requirements.in
     #   coreapi
     #   django-oauth-toolkit
+    #   paypalhttp
     #   requests-oauthlib
     #   scrapetube
     #   social-auth-core
@@ -140,6 +148,7 @@ scrapetube==2.2.2
 six==1.16.0
     # via
     #   ecdsa
+    #   paypalhttp
     #   social-auth-app-django
 social-auth-app-django==4.0.0
     # via
