@@ -5,6 +5,7 @@
         <div class="columns is-centered">
           <div class="column is-9-fullhd is-10-desktop is-10-tablet is-10-mobile
           has-text-centered-mobile py-5 is-offset-1-mobile">
+            <div id="paypal-button-container"></div>
             <router-link to="/sync" class="button is-link is-fullwidth-mobile">
               + Sync more channels
             </router-link>
@@ -204,6 +205,7 @@
 
 <script>
 import axios from 'axios';
+import Router from '../router'; 
 
 export default {
   name: 'Home',
@@ -230,10 +232,45 @@ export default {
     this.submitForm(),
     gapi.signin2.render('google-signin-btn', { // this is the button "id"
       onsuccess: this.onSignIn, // note, no "()" here
-      theme: 'light',
-      width: 240,
-      height: 50,
-    })
+    });
+    const amount = 21.00;
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: amount
+                    }
+                }]
+            })
+        },
+        onApprove: (data, actions) => {
+            const formdata = {
+                'order_id': data.orderID,
+            };
+            return axios.post('/api/v1/payment/', {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formdata)
+            })
+            .then(function(response) {
+
+                if (response.data !== 201) {
+                    return actions.restart(); // Recoverable state, per:
+                }
+
+                if (response.data === 402) {
+                    var msg = 'Sorry, your transaction could not be processed.';
+                    return alert(msg);
+                }
+
+                if (response.data === 201) {
+                  Router.push({ path: 'success' });
+                }
+            });
+        }
+    }).render('#paypal-button-container');
   },
   methods: {
     submitForm(e) {

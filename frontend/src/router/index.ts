@@ -3,11 +3,11 @@ import store from '../store';
 import Home from '../views/Home.vue';
 import About from '../views/About.vue';
 import Collection from '../views/Collection.vue';
-import SignUp from '../views/SignUp.vue';
 import LogIn from '../views/LogIn.vue';
 import Play from '../views/Play.vue';
 import Sync from '../views/Sync.vue';
 import How from '../views/How.vue';
+import Success from '../views/Success.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,11 +27,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/how',
     name: 'How',
     component: How,
-  },
-  {
-    path: '/sign-up',
-    name: 'SignUp',
-    component: SignUp,
   },
   {
     path: '/log-in',
@@ -54,6 +49,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requireLogin: true,
       title: 'Collection',
+    },
+  },
+  {
+    path: '/success',
+    name: 'Success',
+    component: Success,
+    meta: {
+      requireLogin: true,
+      title: 'Success',
     },
   },
   {
