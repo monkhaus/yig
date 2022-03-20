@@ -1,10 +1,12 @@
 from django.db import models
 from api.models.channel import Channel
 from django.contrib.auth import get_user_model
+from api.models.extended_user import ExtendedUserModel
 
 
 class Video(models.Model):
     users = models.ManyToManyField(get_user_model(), blank=True, null=True)
+    extended_user = models.ManyToManyField(ExtendedUserModel, blank=True, null=True)
     channel_url = models.ForeignKey(Channel, on_delete=models.CASCADE, null=True)
     youtube_video_id = models.CharField(max_length=256)
     title = models.CharField(max_length=250, null=True)

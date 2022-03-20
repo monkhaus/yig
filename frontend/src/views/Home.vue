@@ -299,7 +299,7 @@ export default {
                   this.errors.push(`${property}: ${error.response.data[property]}`);
                 }
               }
-              console.log(JSON.stringify(error.response.data));
+              console.log(JSON.stringify(error.response.data.message));
             } else if (error.message) {
               console.log(JSON.stringify(error.message));
             } else {

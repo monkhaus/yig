@@ -6,6 +6,7 @@ from .views import (
     SyncChannelViewSet,
     VideoViewSet,
     HandlePaymentsViewSet,
+    ExtendedUserViewSet,
 )
 from rest_framework import routers
 
@@ -16,5 +17,6 @@ router.register(r'generator', IdeaGeneratorViewSet)
 router.register(r'sync', SyncChannelViewSet)
 router.register(r'video', VideoViewSet)
 router.register(r'payment', HandlePaymentsViewSet)
+router.register(r'me', ExtendedUserViewSet)
 
 urlpatterns = router.urls

@@ -187,9 +187,14 @@ export default {
     getMe() {
       if (this.$store.state.isAuthenticated) {
         axios
-          .get('/api/v1/users/me')
+          .get('/api/v1/me')
           .then((response) => {
-            this.username = response.data.username;
+            if (response && response.data[0].isPremium) {
+              this.$store.state.isPremium = response.data[0].isPremium;
+            } else {
+              this.$store.state.isPremium = false;
+            }
+            this.username = response.data[0].user.username;
             if (this.username !== this.$store.state.activeUser) {
               this.$store.state.activeUser = response.data.username;
             }
