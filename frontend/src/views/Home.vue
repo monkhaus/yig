@@ -5,7 +5,9 @@
         <div class="columns is-centered">
           <div class="column is-9-fullhd is-10-desktop is-10-tablet is-10-mobile
           has-text-centered-mobile py-5 is-offset-1-mobile">
-            <div id="paypal-button-container"></div>
+           <template v-if="!$store.state.isPremium">
+              <div id="paypal-button-container"></div>
+           </template>
             <router-link to="/sync" class="button is-link is-fullwidth-mobile">
               + Sync more channels
             </router-link>
