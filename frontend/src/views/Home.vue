@@ -8,11 +8,14 @@
            <template v-if="!$store.state.isPremium">
               <div id="paypal-button-container"></div>
            </template>
+           <template v-if="$store.state.isPremium">
             <router-link to="/sync" class="button is-link is-fullwidth-mobile">
               + Sync more channels
             </router-link>
+           </template>
           </div>
         </div>
+        <template v-if="$store.state.isPremium">
         <div class="columns is-centered is-mobile">
           <div class="column is-9-fullhd is-10-desktop is-10-tablet is-9-mobile">
             <div class="columns is-mobile">
@@ -114,6 +117,7 @@
             </div>
         </div>
         </form>
+        </template>
       </div>
     </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="home py-3">
-    <template v-if="$store.state.isAuthenticated">
+    <template v-if="$store.state.isAuthenticated && $store.state.isPremium">
         <div class="columns is-centered">
           <div class="column is-9-fullhd is-10-desktop is-10-tablet is-10-mobile
           has-text-centered-mobile py-5 is-offset-1-mobile">
@@ -53,46 +53,6 @@
         <div class="columns">
             <div class="column is-3-fullhd is-3-desktop is-10-tablet is-offset-4-desktop
             is-offset-1-tablet is-12-mobile py-6">
-                <form @submit.prevent="submitForm">
-                    <div class="notification" v-if="errors.length">
-                        <p
-                            v-for="error in erros"
-                            v-bind:key="error"
-                        >
-                            {{ error }}
-                        </p>
-                    </div>
-                    <div class="columns is-multiline-mobile is-centered">
-                      <div
-                        class="column is-12-desktop is-one-third-tablet is-10-mobile
-                        is-offset-1-mobile"
-                        v-for="video in video_detail"
-                        v-bind:key="video.id"
-                      >
-                        <a target="_blank" :href="`https://www.youtube.com/watch?v=${video.youtube_video_id}`">
-                        <div class="box has-background-link media-center">
-                          <figure class="image is-16by9">
-                            <img :src="video.thumbnail_url" alt="thumbnail">
-                          </figure>
-                          <br>
-                          <div class="box has-background-link-light">
-                            <h1>{{ video.title }}</h1>
-                            <p class="has-text-right is-size-7">
-                              <strong>{{ video.view_count }}</strong>
-                            </p>
-                          </div>
-                        </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <button class="button is-fullwidth is-success">
-                              Generate Inspiration
-                            </button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </template>
